@@ -6,8 +6,6 @@ My name is Xin, and I am studying for a PhD：statistics at Colorado State Unver
 - Robust statistics
 - Penalized methods
 
-### Submitted papers
-
 ### Code for Auto-Adaptive M-Estimation
 Here is an example implementation, finding the mean of a heavy-tailed data, and the error density.
 
@@ -39,5 +37,5 @@ hist(y,xaxt='n',yaxt='n',xlab='',ylab = '',main="",probability = T,nclass = 100)
 lines(fit$fhat(xp)~xp,lwd=2)
 ```
 
-### Support or Contact
+## Support or Contact
 Email: xin.chen@colostate.edu
