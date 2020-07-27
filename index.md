@@ -1,5 +1,5 @@
 # Xin Chen
-My name is Xin, and I am studying for a PhD：statistics at Colorado State Unversity.
+My name is Xin, and I am studying for a PhD：Statistics at Colorado State Unversity.
 
 ## RESEARCH INTERESTS:
 - Nonparametric density estimation
