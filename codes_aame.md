@@ -1,4 +1,4 @@
-Here is an example implementation of Auto Adaptive M-Estimation, finding the mean of a heavy-tailed data, and the error density.
+Here is an example implementation of Auto Adaptive M-Estimation (AAME) in R, finding the mean of a heavy-tailed data, and the error density.
 
 1. First we need to run this in R, to define the AAME function:
 [AAME functions](functions_aame.r)
