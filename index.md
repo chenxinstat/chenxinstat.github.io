@@ -1,5 +1,7 @@
 # Xin Chen
-My name is Xin, and I am studying for a PhD：Statistics at Colorado State Unversity.
+My name is Xin, and I am studying for a PhD：Statistics at Colorado State Unversity. 
+
+My academic advisor is Professor Mary C. Meyer, and you can find her here: [Mary C. Meyer](https://www.stat.colostate.edu/~meyer/welcome.html)
 
 ## RESEARCH INTERESTS:
 - Nonparametric density estimation
