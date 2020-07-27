@@ -15,7 +15,7 @@ Load necessary library
 ```markdown
 library(quadprog)
 ```
-Generate the data
+Generate a data
 ```markdown
 set.seed(1)
 y=rt(500,df=2)
