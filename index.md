@@ -9,10 +9,8 @@ My name is Xin, and I am studying for a PhD：statistics at Colorado State Unver
 ### Submitted papers
 
 ### Code for Auto-Adaptive M-Estimation
-
-```markdown
 Here is an example implementation, finding the mean of a heavy-tailed data, and the error density.
-
+```markdown
 library(quadprog)
 
 # generating the data
