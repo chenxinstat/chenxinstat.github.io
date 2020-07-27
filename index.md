@@ -11,5 +11,5 @@ My academic advisor is Professor [Mary C. Meyer](https://www.stat.colostate.edu/
 ## R CODES
 [Auto-Adaptive M-Estimation](codes_aame.md)
 
-## Support or Contact
+### Support or Contact
 Email: xin.chen@colostate.edu
