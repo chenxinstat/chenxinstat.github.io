@@ -1,5 +1,8 @@
 Here is an example implementation of Auto Adaptive M-Estimation, finding the mean of a heavy-tailed data, and the error density.
 
+First we need to run codes to define the AAME function:
+(AAME functions)[functions_aame.r]
+
 Load necessary library:
 ```markdown
 library(quadprog)
