@@ -1,24 +1,18 @@
-Here is an example implementation, finding the mean of a heavy-tailed data, and the error density.
+Here is an example implementation of Auto Adaptive M-Estimation, finding the mean of a heavy-tailed data, and the error density.
 
 Load necessary library:
 ```markdown
 library(quadprog)
 ```
-Generate a data:
+Generate a data and fit the model:
 ```markdown
 set.seed(1)
 y=rt(500,df=2)
-```
-Fit the model:
-```markdown
 fit=onesamp(y)
 ```
-Estimated mean of the data:
+Estimated mean of the data, and its confidence interval:
 ```markdown
 fit$muhat 
-```
-Confidence interval of the mean:
-```markdown
 fit$confidence.intervals 
 ```
 Plot the estimated error density function:
