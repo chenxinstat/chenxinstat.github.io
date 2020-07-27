@@ -10,4 +10,4 @@ My name is Xin, and I am studying for a PhD：Statistics at Colorado State Unver
 [Auto-Adaptive M-Estimation](codes_aame.md)
 
 ## Support or Contact
-Email: [xin.chen@colostate.edu](xin.chen@colostate.edu)
+Email: xin.chen@colostate.edu
