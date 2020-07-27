@@ -8,24 +8,30 @@ My name is Xin, and I am studying for a PhD：statistics at Colorado State Unver
 
 ### Submitted papers
 
-### Code for
+### Code for Auto-Adaptive M-Estimation
 
 ```markdown
-Syntax highlighted code block
+Here is an example implementation, finding the mean of a heavy-tailed data, and the error density.
 
-# Header 1
-## Header 2
-### Header 3
+library(quadprog)
 
-- Bulleted
-- List
+# generating the data
+set.seed(1)
+y=rt(500,df=2)
 
-1. Numbered
-2. List
+# fit
+fit=onesamp(y)
 
-**Bold** and _Italic_ and `Code` text
+# estimated mean of the data
+fit$muhat 
 
-[Link](url) and ![Image](src)
+#confidence interval of the mean
+fit$confidence.intervals 
+
+# plot the estimated error density function
+xp=seq(-max(fit$knots),max(fit$knots),length=100)
+hist(y,xaxt='n',yaxt='n',xlab='',ylab = '',main="",probability = T,nclass = 100)
+lines(fit$fhat(xp)~xp,lwd=2)
 ```
 
 ### Support or Contact
