@@ -1,5 +1,5 @@
 # Xin Chen
-My name is Xin, and I am studying for a PhD：[Statistics at Colorado State Unversity](https://statistics.colostate.edu). 
+My name is Xin, and I am studying at：[Statistics, Colorado State Unversity](https://statistics.colostate.edu). 
 
 My academic advisor is Professor [Mary C. Meyer](https://www.stat.colostate.edu/~meyer/welcome.html).
 
