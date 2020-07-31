@@ -16,7 +16,6 @@ n <- 500
 mu <- 100
 phi.true <- c(0.8,-0.6,0.4)
 p <- length(phi.true)
-
 error <- rep(0,n+p)
 innovation <- rep(NA,n)
 for (i in 1:n) {
@@ -28,7 +27,6 @@ for (i in 1:n) {
   error[i+p] <- temp+innovation[i]
 }
 error <- error[-seq(1:p)]
-
 y <- mu + error
 ```
 
