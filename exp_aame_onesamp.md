@@ -10,7 +10,7 @@ library(quadprog)
 3. Generate a data and fit the model:
 ```markdown
 set.seed(1)
-mu=100
+mu <- 100
 y <- mu + rt(500,df=2)
 fit <- onesamp(y)
 ```
