@@ -25,11 +25,11 @@
 ## need library(quadprog)
 ########################################################################
 
-osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20, figures=FALSE){ # mr:10->15
+osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20, figures=FALSE){
   ans=new.env()
   n=length(y)
   sy=sort(y)
-  lwr=sy[round(n*.2)];upr=sy[round(n*.8)] # may need to update again later!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  lwr=sy[round(n*.2)];upr=sy[round(n*.8)]
   # burn-in stage 0
   mu0=optimize(find0,lower=lwr,upper=upr,phi=rep(0,p),y=y,p=p)$minimum
   phi0=optim(par=rep(0,p),fn=find0,lower=rep(-1,p),upper=rep(1,p),method=ifelse(p>1,"L-BFGS-B","Brent"),y=y,p=p,mu=mu0)$par
