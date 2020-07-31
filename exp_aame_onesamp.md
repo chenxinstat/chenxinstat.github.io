@@ -7,7 +7,7 @@ Here is an example implementation of Auto Adaptive M-Estimation (AAME) for in R,
 library(quadprog)
 ```
 
-3. Generate a data and fit the model:
+3. Generate a data, then fit the model:
 ```markdown
 set.seed(1)
 mu <- 100
