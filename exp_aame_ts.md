@@ -1,6 +1,6 @@
-Here are two example implementations of Auto Adaptive M-Estimation (AAME) for in R, finding the mean and the autoregressive coefficients of a data, and the innovation density, with a heavy-tailed and autocorrelated error.
+Here is an example implementations of Auto Adaptive M-Estimation (AAME) for in R, finding the mean and the autoregressive coefficients of a data, and the innovation density, with a heavy-tailed and autocorrelated error.
 
-The first example will have AR(1) error with order p = 1, the second example will have AR(3) error with order p = 3.
+The example will have AR(3) error with order p = 3.
 
 1. Run this in R: [AAME_AR functions](functions_osar.r)
 
@@ -9,22 +9,40 @@ The first example will have AR(1) error with order p = 1, the second example wil
 library(quadprog)
 ```
 
-3. Generate a data and fit the model for the 1st example:
+3. Generate a data and fit the model:
 ```markdown
 set.seed(1)
-y <- rt(500,df=2)
-fit <- onesamp(y)
+n <- 500
+mu <- 100
+phi.true <- c(0.8,-0.6,0.4)
+p <- length(phi.true)
+
+error <- rep(0,n+p)
+innovation <- rep(NA,n)
+for (i in 1:n) {
+  temp <- 0
+  for (j in 1:p) {
+    temp <- temp+error[i-j+p]*phi.true[j]
+  }
+  innovation[i] <- rt(1,df=2)
+  error[i+p] <- temp+innovation[i]
+}
+error <- error[-seq(1:p)]
+
+y <- mu+error
 ```
 
 4. Estimated mean of the data, and its confidence interval:
 ```markdown
-fit$muhat 
-fit$confidence.intervals 
+fit.osar <- osar(y,p=3)
+fit.osar$muhat
+fit.osar$phihat
 ```
 
-5. Plot the estimated error density function:
+5. Plot the estimated innovation density function:
 ```markdown
-xp <- seq(-max(fit$knots),max(fit$knots),length=100)
-hist(y,xaxt='n',yaxt='n',xlab='',ylab = '',main="",probability = T,nclass = 100)
-lines(fit$fhat(xp)~xp,lwd=2)
+par(mfrow=c(1,1),mar=c(3,3,1,1),cex=1,cex.main=1,las=0,mgp=c(1.5,0.5,0))
+hist(innovation,xaxt='n',yaxt='n',xlab='',ylab = '',main="",probability = T,nclass = 50)
+xp <- seq(-max(fit.osar$knots),max(fit.osar$knots),length=200)
+lines(fit.osar$fhat(xp)~xp,type="l",lwd=2)
 ```
