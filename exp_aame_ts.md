@@ -1,4 +1,6 @@
-Here is an example implementation of Auto Adaptive M-Estimation (AAME) for in R, finding the mean and the autoregressive coefficients of a data, and the innovation density, with a heavy-tailed and autocorrelated error.
+Here are two example implementations of Auto Adaptive M-Estimation (AAME) for in R, finding the mean and the autoregressive coefficients of a data, and the innovation density, with a heavy-tailed and autocorrelated error.
+
+The first example will have AR(1) error with order p = 1, the second example will have AR(3) error with order p = 3.
 
 1. Run this in R: [AAME_AR functions](functions_osar.r)
 
@@ -7,7 +9,7 @@ Here is an example implementation of Auto Adaptive M-Estimation (AAME) for in R,
 library(quadprog)
 ```
 
-3. Generate a data and fit the model:
+3. Generate a data and fit the model for the 1st example:
 ```markdown
 set.seed(1)
 y <- rt(500,df=2)
