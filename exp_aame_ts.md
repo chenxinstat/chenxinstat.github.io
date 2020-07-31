@@ -9,7 +9,7 @@ The example will have AR(3) error with order p = 3.
 library(quadprog)
 ```
 
-3. Generate a data and fit the model:
+3. Generate a heavy-tailed and autocorrelated data, then fit the model:
 ```markdown
 set.seed(1)
 n <- 500
