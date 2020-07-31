@@ -32,7 +32,7 @@ error <- error[-seq(1:p)]
 y <- mu+error
 ```
 
-4. Estimated mean of the data, and its confidence interval:
+4. Estimated mean of the data, and the autoregressive coefficients:
 ```markdown
 fit.osar <- osar(y,p=3)
 fit.osar$muhat
