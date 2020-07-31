@@ -1,6 +1,6 @@
 Here is an example implementation of Auto Adaptive M-Estimation (AAME) in R, finding the mean of a data and the error density. The data could be with a heavy-tailed and/or comtaminated AR(p) error. The autoregressive coefficients would be estimated as well.
 
-The example will have AR(3) error with order p = 3.
+The example will have a heavy-tailed AR(3) error with order p = 3.
 
 1. Run this in R: [AAME_AR functions](functions_osar.r)
 
