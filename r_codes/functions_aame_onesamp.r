@@ -1,5 +1,5 @@
 ########################################################################
-# Code to do auto-adaptive M-estimation
+# Code to do auto-adaptive M-estimation for one-sample problem
 #
 #  must-have inputs: y = the data
 #
