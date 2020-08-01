@@ -1,6 +1,6 @@
 Here is an example implementation of Auto Adaptive M-Estimation (AAME) in R, finding the mean of a data and the error density. The data could be with a heavy-tailed and/or comtaminated error.
 
-1. Run this in R: [AAME functions](r_codes/functions_aame.r)
+1. Run this in R: [AAME_onesamp functions](r_codes/functions_aame.r)
 
 2. Load necessary library:
 ```markdown
