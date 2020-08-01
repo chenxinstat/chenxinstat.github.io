@@ -1,5 +1,5 @@
 ########################################################################
-# Code to do auto-adaptive M-estimation (osar)
+# Code to do Auto-Adaptive M-Estimation for one-sample problem with autocorrelated error
 #
 #  must-have inputs: y = the data
 #
