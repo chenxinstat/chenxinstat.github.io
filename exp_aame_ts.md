@@ -2,7 +2,7 @@ Here is an example implementation of Auto Adaptive M-Estimation (AAME) in R, fin
 
 The example will have a heavy-tailed AR(3) error with order p = 3.
 
-1. Run this in R: [AAME_AR functions](functions_osar.r)
+1. Run this in R: [AAME_AR functions](r_codes/functions_osar.r)
 
 2. Load necessary library:
 ```markdown

@@ -7,10 +7,5 @@ My academic advisor is Professor [Mary C. Meyer](https://www.stat.colostate.edu/
 - Robust statistics
 - Penalized methods
 
-## R CODES
-[Auto-Adaptive M-Estimation (AAME) for one-sample problem](exp_aame_onesamp.md)
-
-[AAME for time series problem](exp_aame_ts.md)
-
 ### Support or Contact
 Email: xin.chen@colostate.edu
