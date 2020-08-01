@@ -14,7 +14,7 @@ library(quadprog)
 set.seed(1)
 n <- 500
 mu <- 100
-phi.true <- c(0.8,-0.6,0.4)
+phi.true <- c(0.7,-0.8,0.6)
 p <- length(phi.true)
 error <- rep(0,n+p)
 innovation <- rep(NA,n)
