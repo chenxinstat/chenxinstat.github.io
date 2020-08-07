@@ -1,5 +1,5 @@
 ########################################################################
-# Code to do Auto-Adaptive M-Estimation for one-sample problem with autocorrelated error
+# Code to do auto-adaptive M-estimation (osar)
 #
 #  must-have inputs: y = the data
 #
@@ -14,8 +14,6 @@
 #           knots = planced knots for spline density estiamtion
 #           muhat = estiamted mean for the data
 #           phihat = estiamted autoregressive phi for the data
-#           mvec = record of every muhat in loops
-#           pmat = record of every phihat in loops
 #           pen = selected penalty constant by cross-validation
 #           penvals = automatically generated candidate values of penalty
 #           risk = estimated risks for cross-validation
@@ -25,7 +23,7 @@
 ## need library(quadprog)
 ########################################################################
 
-osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20, figures=FALSE){
+osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20){
   ans=new.env()
   n=length(y)
   sy=sort(y)
@@ -42,7 +40,7 @@ osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20, figures=FALSE){
     mvec=c(mvec,m.new)
     p.new=optim(par=p.old,fn=find0,lower=rep(-1,p),upper=rep(1,p),method=ifelse(p>1,"L-BFGS-B","Brent"),y=y,p=p,mu=m.new)$par
     pmat=cbind(pmat,p.new)
-    if(abs((m.new-m.old)/m.old)<1e-3 & all(abs((p.new-p.old)/p.old)<1e-3) ) break
+    if(abs(m.new-m.old)<=abs(m.old)*1e-3 & all(abs(p.new-p.old)<=abs(p.old)*1e-3) ) break
   } 
   # place knots
   mu0=mvec[length(mvec)]
@@ -179,14 +177,14 @@ osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20, figures=FALSE){
   betavec=solve.QP(qmat, cvec, t(wmat), -b0)$solution
   bhat=(wmat)%*%betavec+b0
   # burn-in stage 1
-  for (i in 1:nloops) {
+  for (i in 1:(nloops+1)) {
     m.old=mvec[length(mvec)]
     p.old=pmat[,dim(pmat)[2]]
     m.new=optimize(find1,lower=lwr,upper=upr,phi=p.old,y=y,p=p,kn=kn,bhat=bhat)$minimum
     mvec=c(mvec,m.new)
     p.new=optim(par=p.old,fn=find1,lower=rep(-1,p),upper=rep(1,p),method=ifelse(p>1,"L-BFGS-B","Brent"),y=y,p=p,mu=m.new,kn=kn,bhat=bhat)$par
     pmat=cbind(pmat,p.new)
-    if(abs((m.new-m.old)/m.old)<1e-3 & all(abs((p.new-p.old)/p.old)<1e-3) ) break
+    if(abs(m.new-m.old)<=abs(m.old)*1e-3 & all(abs(p.new-p.old)<=abs(p.old)*1e-3) ) break
   } 
   mu0=mvec[length(mvec)]
   phi0=pmat[,dim(pmat)[2]]
@@ -196,36 +194,12 @@ osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20, figures=FALSE){
   phihat=fans$par[-1]
   mvec=c(mvec,muhat)
   pmat=cbind(pmat,phihat)
-  #---------------- plots
-  if (figures==TRUE & p==1){ # marginal surface
-    par(mfrow=c(1,3),mar=c(3,2.5,2,1),cex=1,cex.main=1,las=0,mgp=c(1.5,0.5,0))
-    mu.grid=seq(min(y),max(y),length=200)
-    phi.grid=seq(-1,1,length=200)
-    findmu.plot=findphi.plot=rep(NA,200)
-    for (ii in 1:200) {
-      findmu.plot[ii]=find1(mu=mu.grid[ii],phi=phihat,y=y,p=p,bhat=bhat,kn=kn)
-      findphi.plot[ii]=find1(mu=muhat,phi=phi.grid[ii],y=y,p=p,bhat=bhat,kn=kn)
-    }
-    plot(findmu.plot~mu.grid,type="l",yaxt='n',ylab = "",xlab=expression(mu),main="(a)",lwd=2)
-    plot(findphi.plot~phi.grid,type="l",yaxt='n',ylab = "",xlab=expression(phi),main="(b)",lwd=2)
-    mu.grid=seq(lwr,upr,length=100)
-    phi.grid=seq(-1,1,length=100)
-    crit=matrix(NA,length(mu.grid),length(phi.grid))
-    for (i in 1:length(mu.grid)) {
-      for (j in 1:length(phi.grid)) {
-        crit[i,j]=find2(c(mu.grid[i],phi.grid[j]),y=y,p=p,bhat=bhat,kn=kn) 
-      }
-    }
-    contour(mu.grid, phi.grid, crit,nlevels = 50, xlab=expression(mu),ylab=expression(phi),main="(c)")
-  }
-  
+
   # outputs
   ans$knots=kn
   ans$bhat=bhat
   ans$muhat=muhat
   ans$phihat=phihat
-  ans$mvec=mvec
-  ans$pmat=pmat
   ans$pen=pen                                
   ans$penvals=penvals
   # output estimated density function g
@@ -265,7 +239,7 @@ find0=function(mu,phi,p,y){
   for (i in 1:p) {
     temp.y=temp.y-phi[i]*y[(p+1-i):(n-i)]
   }
-  x=sort(abs(temp.y-(1-sum(phi))*mu))
+  x=temp.y-(1-sum(phi))*mu
   sum(abs(x))
 }
 
