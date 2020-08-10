@@ -7,7 +7,7 @@
 #                   mr = the mesh ratio (default value 10)
 #                   pen = the penalty constant (o/w will use cross-validation to find one)
 #                   penvals = vector of candidate values of penalty (o/w will get one automatically)
-#                   nloops = maximum number of Cochrane-Orcutt flavored loops 
+#                   nloops = maximum number of Cochrane-Orcutt flavored burn-in loops 
 #
 #  returns: bhat = the estiamted spline density coefficients
 #           fhat = estimated error density function
@@ -23,7 +23,7 @@
 ## need library(quadprog)
 ########################################################################
 
-osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20){
+osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20){ 
   ans=new.env()
   n=length(y)
   sy=sort(y)
@@ -51,7 +51,7 @@ osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20){
   }
   xs=abs(temp.y-(1-sum(phi0))*mu0)
   n=length(xs)
-  S=1.5*quantile(xs,0.98)  
+  S=1.5*quantile(xs,0.98) 
   J=round(n^(1/7)*10)
   kn=S*(mr^(seq(0,J-1)/(J-2))-1)/(mr^((J-1)/(J-2))-1)
   k=J-2
@@ -176,30 +176,21 @@ osar=function(y, p=1, mr=10, pen=NA, penvals=NA, nloops=20){
   cvec=t(wmat)%*%(zvec-hpen%*%b0)
   betavec=solve.QP(qmat, cvec, t(wmat), -b0)$solution
   bhat=(wmat)%*%betavec+b0
-  # burn-in stage 1
-  for (i in 1:(nloops+1)) {
-    m.old=mvec[length(mvec)]
-    p.old=pmat[,dim(pmat)[2]]
-    m.new=optimize(find1,lower=lwr,upper=upr,phi=p.old,y=y,p=p,kn=kn,bhat=bhat)$minimum
-    mvec=c(mvec,m.new)
-    p.new=optim(par=p.old,fn=find1,lower=rep(-1,p),upper=rep(1,p),method=ifelse(p>1,"L-BFGS-B","Brent"),y=y,p=p,mu=m.new,kn=kn,bhat=bhat)$par
-    pmat=cbind(pmat,p.new)
-    if(abs(m.new-m.old)<=abs(m.old)*1e-3 & all(abs(p.new-p.old)<=abs(p.old)*1e-3) ) break
-  } 
-  mu0=mvec[length(mvec)]
-  phi0=pmat[,dim(pmat)[2]]
-  # final joint-estimation after all burn-in preparations
-  fans=optim(par=c(mu0,phi0),fn=find2,lower=c(lwr,rep(-1,p)),upper=c(upr,rep(1,p)),method="L-BFGS-B",y=y,p=p,kn=kn,bhat=bhat)
+
+  # joint-estimation after all burn-in preparations
+  fans=optim(par=c(mu0,phi0),fn=find1,lower=c(lwr,rep(-1,p)),upper=c(upr,rep(1,p)),method="L-BFGS-B",y=y,p=p,kn=kn,bhat=bhat)
   muhat=fans$par[1]
   phihat=fans$par[-1]
   mvec=c(mvec,muhat)
   pmat=cbind(pmat,phihat)
-
+  
   # outputs
   ans$knots=kn
   ans$bhat=bhat
   ans$muhat=muhat
   ans$phihat=phihat
+  ans$mu0=mu0
+  ans$phi0=phi0
   ans$pen=pen                                
   ans$penvals=penvals
   # output estimated density function g
@@ -243,35 +234,7 @@ find0=function(mu,phi,p,y){
   sum(abs(x))
 }
 
-find1=function(mu,phi,p,y,bhat,kn){
-  n=length(y)
-  temp.y=y[(p+1):n]
-  for (i in 1:p) {
-    temp.y=temp.y-phi[i]*y[(p+1-i):(n-i)]
-  }
-  x=sort(abs(temp.y-(1-sum(phi))*mu))
-  n=length(x)
-  J=length(kn);k=J-2
-  delta=matrix(0,nrow=J,ncol=n)	
-  delta[J,]=1:n*0+1
-  for(j in 1:k){
-    ind=x<=kn[j]
-    delta[j,ind] = 1
-    ind=x>kn[j]&x<=kn[j+1]
-    delta[j,ind] = 1 - (x[ind]-kn[j])^2 / (kn[j+2]-kn[j]) / (kn[j+1]-kn[j])
-    ind=x>kn[j+1]&x<=kn[j+2]
-    delta[j,ind] = (x[ind]-kn[j+2])^2/(kn[j+2]-kn[j+1])/(kn[j+2]-kn[j])
-    ind=x>kn[j+2]
-    delta[j,ind]=0
-  }
-  ind=x<=kn[k+1]
-  delta[k+1,ind]=1
-  ind=x>kn[k+1]
-  delta[k+1,ind]=1-(x[ind]-kn[k+1])^2/(kn[k+2]-kn[k+1])^2
-  -sum(t(bhat)%*%delta)
-}
-
-find2=function(est,p,y,bhat,kn){
+find1=function(est,p,y,bhat,kn){
   mu=est[1]
   phi=est[-1]
   n=length(y)
