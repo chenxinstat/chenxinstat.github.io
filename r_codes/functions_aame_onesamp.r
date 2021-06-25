@@ -36,7 +36,7 @@ onesamp=function(y, mr=10, mu0=NA, alpha=0.05, pen=NA, penvals=NA){
   x=sort(xs)
 # make candiate values of penalty, if not given by user
   if ((is.na(penvals) && is.na(pen) )) {
-    penbasis=c(n^(-12/7)*exp(1)^seq(-25,10,length=30))   
+    penbasis=c(n^(-13/14)*exp(1)^seq(-25,log(240),length=30))   
     penvals=penbasis*quantile(x,0.9)^5    
   }
 # Create the penalty D matrix
